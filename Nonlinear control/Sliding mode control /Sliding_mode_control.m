@@ -3,17 +3,18 @@ clc; clear all; close all;
 % Topic: Sliding mode control.
 
 %% Variables and bounderies
-global l m k g gain dummy int_x1 int_x2 
+global l m k g gain dummy int_x1 int_x2 n
+n = 0;
 l = rand(1)*(1.1 - 0.9) + 0.9; % Random pick lenght with boundery 0.9<= l <= 1.1
 m = rand(1)*(1.5 - 0.5) + 0.5; % Random pick mass with boundery 0.5 <= m <= 1.5
 k = rand(1)*(0.2 - 0);          % Random pick resistance with boundery 0 <= k <= 0.2
 g = 9.81;                     % Gravity
-gain = -10;
-t = [0:1:100]';
+gain = -1;
+t = [1:0.01:50]';
 dummy = 1;
-              % Horizontal acceleration with random pick 
+time1 = cputime;            % Horizontal acceleration with random pick 
 int_x1 = 0.5;
-int_x2 = 3;
+int_x2 = 0.3;
 
 %% Dynamics 
 % x1   = theta
@@ -26,23 +27,19 @@ plot(t,x)
 grid on 
 xlabel('time')
 
-%px = (0.01/l) - ((0.2*0.01)/m) - g*sin(0.01) - gain*0.01
-
+time = cputime-time1
 function dx=xdot(t,x)
-global l m k g gain dummy int_x1 int_x2 u
+global l m k g gain u 
+      
+    %t
+    s = x(2)-gain*x(1);
+    u = -1*(16.1865*abs(x(1)) + 1.815*abs(x(2)) + 2) * sign(s);
     
-    if dummy == 1
-    u = (-16.1865*norm(int_x1) + 1.815*norm(int_x2) + 2);%*sat((int_x2-gain*int_x2)/0.004)
-    dummy = 0;
-    end
+   % Incert sign fuction
     
     dx(1,1) = x(2);
-    dx(2,1) = (1/(m*l))*(m*(sin(t*2*pi))*cos(x(1)) - k*l*x(2) - m*g*l*sin(x(1))) + (1/(m*l^2)*u);   
-
-    u = -1*(-16.1865*norm(x(1)) + 1.815*norm(x(2)) + 2) * sign((x(2)-gain*x(2))/0.004)
+    dx(2,1) = (1/(m*l))*(m*(sin(t))*cos(x(1)) - k*l*x(2) - m*g*l*sin(x(1))) + (1/(m*l^2)*u);   
     
-
-
 end
 
    
@@ -71,4 +68,3 @@ end
 
 % delta/g <= norm(delta,1)
 % v  -beta*sgn(s) 
-% beta < (norm(delta,1))
