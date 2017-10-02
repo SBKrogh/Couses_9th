@@ -1,8 +1,7 @@
 clc; clear all; close all; 
 %% For the miniproject in Nonlinear control. 
 % Topic: Sliding mode control.
-% The function of dynamics can be found at the buttom of this script.
-%  
+% The function of dynamics can be found at the buttom of this script. 
 
 % x1   = theta
 % x2   = theta_d = x1_d
@@ -27,9 +26,7 @@ time1 = cputime;                % Simulation time
 %% Control problem 
 [t,x] = ode45(@xdot, t , [int_x1 int_x2]);
 
-
-%% Plot
-% Recalculations of control u
+%% Recalculations of control u
 % For taking care of chattering we use a saturation approach and approx 
 % the sgn(s) function
 
@@ -46,7 +43,7 @@ for q = 1:length(x)
     % 1.65 + beta_zero = 2 -> Beta_zero = 0.35
     
     beta = -(16.1865*abs(x(q,1)) + (1.5730*abs(x(q,2)) + 2));
-    epsilon = 0.004;  % Solution suggest epsilon = 0.004
+    epsilon = 0.004;  % 
    
     % Satuation 
     sat = s/epsilon; 
@@ -66,15 +63,15 @@ s = x(:,2)-gain*x(:,1);
 h  = sin(t);
 s_d = m*l^2 * (((h.*cos(x(:,1)))*(1/l)) - (k*x(:,2))*(1/l) - g*sin(x(:,1)) - gain*(x(:,2)));
 
-% Start plotting
+%% Plot
 figure
 subplot(2,3,1)
 plot(t,x) 
 grid on 
 hold on
-plot(xlim, [0.01 0.01], '-r')
+plot(xlim, [0.01 0.01], '-g')
 hold on 
-plot(xlim, -[0.01 0.01], '-r')
+plot(xlim, -[0.01 0.01], '-g')
 %xlabel('time')
 title('State of the system Theta = x1 and Theta_{dot} = x2')
 xlabel('Time')
@@ -137,10 +134,10 @@ global l m k g gain
     % 1.65 + beta_zero = 2 -> Beta_zero = 0.35
     
     beta = -(16.1865*abs(x(1)) + (1.5730*abs(x(2)) + 2));
-    epsilon = 0.004;        % Was suggested to be 0.004;
-    s = x(2)-gain*x(1);     % Sliding manifold
+    epsilon = 0.004;        
+    s = x(2)-gain*x(1);  % Sliding manifold
     
-    sat = s/epsilon;
+    sat = s/epsilon;     % Saturation
     if sat > 1 
         u = beta;
     end
@@ -151,7 +148,7 @@ global l m k g gain
         u = -beta;
     end
     
-    h = sin(t); % Disturbance
+    h = sin(t);          % Disturbance
     
     % System dynamics
     dx(1,1) = x(2); 
