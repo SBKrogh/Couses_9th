@@ -71,11 +71,16 @@ figure
 subplot(2,3,1)
 plot(t,x) 
 grid on 
-xlabel('time')
+hold on
+plot(xlim, [0.01 0.01], '-r')
+hold on 
+plot(xlim, -[0.01 0.01], '-r')
+%xlabel('time')
 title('State of the system Theta = x1 and Theta_{dot} = x2')
-xlabel('Time [s]')
+xlabel('Time')
 ylabel('State value')
 legend('Theta','Theta_{dot}')
+axis([0.0 30 -0.04 0.04])
 
 subplot(2,3,4)
 plot(t,u)
@@ -119,8 +124,6 @@ simulation_time = cputime-time1
 
 function dx=xdot(t,x)
 global l m k g gain
-    
-    
     % Control u calculated with saturation 
     % The scalars of beta have been calculated from the biggest values
     % possible of the variables.
