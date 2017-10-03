@@ -46,7 +46,7 @@ for q = 1:length(x)
     % 1.65 + beta_zero = 2 -> Beta_zero = 0.35
     
     beta = -(16.1865*abs(x(q,1)) + (1.5730*abs(x(q,2)) + 2));
-    epsilon = 0.004;  % Solution suggest epsilon = 0.004
+    epsilon = 0.004;  % Suggestted value epsilon = 0.004
    
     % Satuation 
     sat = s/epsilon; 
