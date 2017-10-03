@@ -9,7 +9,7 @@ clc; clear all; close all;
 
 
 %% Variables and bounderies
-global l m k g gain int_x1 int_x2 
+global l m k g gain int_x1 int_x2 epsilon
 
 l = rand(1)*(1.1 - 0.9) + 0.9;  % Random pick lenght with boundery 0.9<= l <= 1.1
 m = rand(1)*(1.5 - 0.5) + 0.5;  % Random pick mass with boundery 0.5 <= m <= 1.5
@@ -18,6 +18,7 @@ g = 9.81;                       % Gravity
 gain = -1;                      % Stabilising feedback gain for eta_d               % Time spend on simulation
 int_x1 = rand(1);               % Initial values for x1 = Theta and x2 = Theta_d
 int_x2 = rand(1);
+epsilon = 0.004;
 
 t = [0:0.01:50]';
 time1 = cputime;                % Simulation time
@@ -44,7 +45,7 @@ for q = 1:length(x)
     
     beta = -(16.1865*abs(x(q,1)) + (1.5730*abs(x(q,2)) + 2));
 
-    epsilon = 0.004;  
+    
    
     % Satuation 
     sat = s/epsilon; 
@@ -70,9 +71,9 @@ subplot(2,3,1)
 plot(t,x) 
 grid on 
 hold on
-plot(xlim, [0.01 0.01], '-g')
+plot(xlim, [0.01 0.01], '-k')
 hold on 
-plot(xlim, -[0.01 0.01], '-g')
+plot(xlim, -[0.01 0.01], '-k')
 %xlabel('time')
 title('State of the system Theta = x1 and Theta_{dot} = x2')
 xlabel('Time')
@@ -121,7 +122,7 @@ simulation_time = cputime-time1
 %%
 
 function dx=xdot(t,x)
-global l m k g gain
+global l m k g gain epsilon
     % Control u calculated with saturation 
     % The scalars of beta have been calculated from the biggest values
     % possible of the variables.
@@ -134,8 +135,7 @@ global l m k g gain
     % 1.5730 |x2|
     % 1.65 + beta_zero = 2 -> Beta_zero = 0.35
     
-    beta = -(16.1865*abs(x(1)) + (1.5730*abs(x(2)) + 2));
-    epsilon = 0.004;        
+    beta = -(16.1865*abs(x(1)) + (1.5730*abs(x(2)) + 2));       
     s = x(2)-gain*x(1);  % Sliding manifold
     
     sat = s/epsilon;     % Saturation
