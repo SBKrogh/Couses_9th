@@ -1,4 +1,9 @@
+%% Authors
+% Simon Bjerre Krogh 
+% Thomas Holm Pilgaard
+%% 
 clc; clear all; close all; 
+
 %% For the miniproject in Nonlinear control. 
 % Topic: Sliding mode control.
 % The function of dynamics can be found at the buttom of this script. 
@@ -6,7 +11,6 @@ clc; clear all; close all;
 % x1   = theta
 % x2   = theta_d = x1_d
 % x2_d = theta_dd
-
 
 %% Variables and bounderies
 global l m k g gain int_x1 int_x2 epsilon
